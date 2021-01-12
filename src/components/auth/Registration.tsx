@@ -21,7 +21,7 @@ export default class Registration extends Component<{}, IRegiostrationState> {
   }
 
   componentDidMount() {
-    console.log(firebase);
+    console.log("firebase:", firebase);
   }
 
   onSingUp() {
@@ -30,6 +30,9 @@ export default class Registration extends Component<{}, IRegiostrationState> {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((res: any) => {
+        firebase.firestore().collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .set({name, email})
         console.log('RES: ', res);
         console.log(`User  [ ${name || email} ] created`);
       })

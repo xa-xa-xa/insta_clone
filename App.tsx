@@ -2,24 +2,32 @@ import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { Provider } from 'react-redux';
+
+
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LandingPage from './src/components/auth/LandingPage';
 import Registration from './src/components/auth/Registration';
 import Login from './src/components/auth/Login';
-import firebase from './src/firebase/config';
-// import firebase from 'firebase';
+import Main from './src/components/Main'
+
+import firebase from 'firebase/app';
+import { createStore, applyMiddleware } from 'redux'
+import rootReducer from "./src/redux/reducers/index"
+import thunk from 'redux-thunk'
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'gray',
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}); 
 
 interface IInitialState {
   loaded: boolean;
@@ -34,18 +42,14 @@ export default class App extends Component<{}, IInitialState> {
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user: any) => {
-      if (!user) {
-        this.setState({ loggedIn: false, loaded: true });
-      } else {
-        this.setState({ loggedIn: true, loaded: true });
-      }
+      this.setState({ loggedIn: user ? true : false, loaded: true });
+      console.log("USER:", user?.email, this.state)
     });
-    console.log('state:', this.state);
+    
   }
 
   render() {
     const { loaded, loggedIn } = this.state;
-    console.log(loaded, loggedIn);
     if (!loaded) {
       return (
         <View style={styles.container}>
@@ -53,7 +57,7 @@ export default class App extends Component<{}, IInitialState> {
         </View>
       );
     }
-    if (loggedIn) {
+    if (!loggedIn) {
       return (
         <NavigationContainer>
           <Stack.Navigator initialRouteName='Landing'>
@@ -75,12 +79,13 @@ export default class App extends Component<{}, IInitialState> {
           </Stack.Navigator>
         </NavigationContainer>
       );
+    } else {
+      return (
+        <Provider store={store}>
+          <Main />
+        </Provider>
+      );
     }
-    return (
-      <View style={styles.container}>
-        <Text>User is LoggedIn</Text>
-      </View>
-    );
   }
 }
 
