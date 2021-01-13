@@ -12,10 +12,12 @@ import Registration from './src/components/auth/Registration';
 import Login from './src/components/auth/Login';
 import Main from './src/components/Main'
 
+
 import firebase from 'firebase/app';
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from "./src/redux/reducers/index"
 import thunk from 'redux-thunk'
+import { AddPicture } from './src/components/main/AddPicture';
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
@@ -27,7 +29,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-}); 
+});
 
 interface IInitialState {
   loaded: boolean;
@@ -45,7 +47,7 @@ export default class App extends Component<{}, IInitialState> {
       this.setState({ loggedIn: user ? true : false, loaded: true });
       console.log("USER:", user?.email, this.state)
     });
-    
+
   }
 
   render() {
@@ -82,7 +84,20 @@ export default class App extends Component<{}, IInitialState> {
     } else {
       return (
         <Provider store={store}>
-          <Main />
+          <NavigationContainer>
+            <Stack.Navigator initialRouteName='Main'>
+              <Stack.Screen
+                name='Main'
+                component={Main}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name='Add'
+                component={AddPicture}
+                // options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
         </Provider>
       );
     }

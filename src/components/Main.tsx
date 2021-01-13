@@ -6,9 +6,20 @@ import { connect } from 'react-redux'
 import { AnyAction, bindActionCreators, Dispatch } from 'redux'
 import { fetchUser } from '../redux/actions/index'
 
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import Feed from './main/Feed'
+
+import Profile from './main/Profile'
+
+
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+
+
+const Tab = createBottomTabNavigator();
+const EmptyScreen = () => null
+
 export class Main extends Component {
     // static propTypes = {
-
     // }
 
     componentDidMount() {
@@ -17,16 +28,40 @@ export class Main extends Component {
 
 
     render() {
-        const { currentUser } = this.props
-        console.log("currentUser:", currentUser)
         return (
-            !currentUser?.email ? <View style={styles.container}>
-                <ActivityIndicator size="large" color="#00ff00" />
-                <Text>Loading user data...</Text>
-            </View> : <View style={styles.container}>
-                    <Text>
-                        {`User '${currentUser?.email}' is LoggedIn`}</Text>
-                </View>
+            <Tab.Navigator initialRouteName="Feed">
+                <Tab.Screen
+                    name="Feed"
+                    component={Feed}
+                    options={{
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <MaterialCommunityIcons name="home" color={color} size={26} />
+                        )
+                    }} />
+                <Tab.Screen
+                    name="AddImageContainer"
+                    component={EmptyScreen}
+                    listeners={({ navigation }) => ({
+                        tabPress: (e: Event) => {
+                            e.preventDefault()
+                            navigation.navigate("Add")
+                        }
+                    })}
+                    options={{
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <MaterialCommunityIcons name="plus-box" color={color} size={26} />
+                        )
+                    }} />
+                <Tab.Screen
+                    name="Profile"
+                    component={Profile} 
+                    options={{
+                        tabBarIcon: ({ color, size, focused }) => (
+                            <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+                        )
+                    }} />
+                {/* <Tab.Screen name="Settings" component={Login} /> */}
+            </Tab.Navigator>
         )
     }
 }
