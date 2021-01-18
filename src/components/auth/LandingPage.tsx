@@ -21,10 +21,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    padding: '4rem',
+    padding: 48,
   },
   button: {
-    marginBottom: '2rem',
+    marginBottom: 32,
   },
   red: {
     color: 'red',

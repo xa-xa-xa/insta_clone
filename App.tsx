@@ -13,14 +13,18 @@ import Login from './src/components/auth/Login';
 import Main from './src/components/Main'
 
 
-import firebase from 'firebase/app';
 import { createStore, applyMiddleware } from 'redux'
 import rootReducer from "./src/redux/reducers/index"
 import thunk from 'redux-thunk'
-import { AddPicture } from './src/components/main/AddPicture';
+import AddPicture from './src/components/main/AddPicture';
+import firebase from 'firebase';
+import firebaseConfig from './src/firebase/config';
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const Stack = createStackNavigator();
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export const styles = StyleSheet.create({
   container: {
@@ -45,7 +49,6 @@ export default class App extends Component<{}, IInitialState> {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user: any) => {
       this.setState({ loggedIn: user ? true : false, loaded: true });
-      console.log("USER:", user?.email, this.state)
     });
 
   }

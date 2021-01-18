@@ -1,6 +1,6 @@
+import firebase from 'firebase';
 import React, { Component } from 'react';
 import { View, Button, TextInput } from 'react-native';
-import firebase from '../../firebase/config.js';
 
 type ILoginState = {
   password: string;
@@ -24,14 +24,14 @@ export default class Login extends Component<{}, ILoginState> {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then((res: Response) => {
+      .then((res) => {
         console.log('RES: ', res);
       })
       .catch((er: Error) => console.error(er));
   }
   render() {
     return (
-      <View style={{ padding: '2rem' }}>
+      <View style={{ padding: 32 }}>
         <TextInput
           placeholder='email'
           onChangeText={(email) => this.setState({ email })}

@@ -1,7 +1,6 @@
+import firebase from 'firebase';
 import React, { Component } from 'react';
 import { View, Button, TextInput } from 'react-native';
-import firebase from '../../firebase/config';
-// import firebase from 'firebase/app';
 
 type IRegiostrationState = {
   name: string;
@@ -30,9 +29,11 @@ export default class Registration extends Component<{}, IRegiostrationState> {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then((res: any) => {
-        firebase.firestore().collection("users")
-          .doc(firebase.auth().currentUser.uid)
-          .set({name, email})
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(firebase.auth().currentUser?.uid)
+          .set({ name, email });
         console.log('RES: ', res);
         console.log(`User  [ ${name || email} ] created`);
       })
@@ -40,7 +41,7 @@ export default class Registration extends Component<{}, IRegiostrationState> {
   }
   render() {
     return (
-      <View style={{ padding: '2rem' }}>
+      <View style={{ padding: 32 }}>
         <TextInput
           placeholder='name'
           onChangeText={(name) => this.setState({ name })}

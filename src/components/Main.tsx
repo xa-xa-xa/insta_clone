@@ -7,9 +7,9 @@ import { AnyAction, bindActionCreators, Dispatch } from 'redux'
 import { fetchUser } from '../redux/actions/index'
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import Feed from './main/Feed'
+import { Feed } from './main/Feed';
 
-import Profile from './main/Profile'
+import { Profile } from './main/Profile';
 
 
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'

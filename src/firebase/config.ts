@@ -13,8 +13,4 @@ const firebaseConfig = {
   measurementId: 'G-YSC22HZBMR',
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
-
-export default firebase;
+export default firebaseConfig;
