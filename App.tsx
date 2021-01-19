@@ -17,6 +17,7 @@ import { createStore, applyMiddleware } from 'redux'
 import rootReducer from "./src/redux/reducers/index"
 import thunk from 'redux-thunk'
 import AddPicture from './src/components/main/AddPicture';
+import Save from './src/components/main/Save';
 import firebase from 'firebase';
 import firebaseConfig from './src/firebase/config';
 const store = createStore(rootReducer, applyMiddleware(thunk))
@@ -97,7 +98,12 @@ export default class App extends Component<{}, IInitialState> {
               <Stack.Screen
                 name='Add'
                 component={AddPicture}
-                // options={{ headerShown: false }}
+                navigation={this.props.navigation}
+              />
+              <Stack.Screen
+                name='Save'
+                component={Save}
+                navigation={this.props.navigation}
               />
             </Stack.Navigator>
           </NavigationContainer>
